@@ -1,7 +1,6 @@
-import re
-import subprocess
 import os
-import sys
+import codecs
+import subprocess
 from xml.dom.minidom import parse, getDOMImplementation
 
 
@@ -16,7 +15,6 @@ def launch(cmd, split_lines=True):
     except OSError, inst:
         raise LaunchError(1, cmd, stdout + " " + stderr + ": " + str(inst))
     
-    printLines(stdout)
     if p.returncode == 0:
         return stdout.splitlines(False)
     else:
@@ -29,8 +27,8 @@ class LaunchError(Exception):
 
 
 log = "log.xml"
-workspace = "C:/Users/sam.adams/trunk"
-projects = ["edge-core", "edge-common", "edge-engines", "eeg-common"]
+workspace = "/projects"
+projects = ["project1", "project2"]
 
 dirs = [workspace + "/" + project for project in projects]
 
@@ -51,7 +49,3 @@ nodes.sort(key=lambda e: int(e.attributes['revision'].value))
 
 with codecs.open("log.xml", "w", "utf-8") as out:
     combined.writexml(out)
-
-#file_handle = open("filename.xml","wb")
-#Your_Root_Node.writexml(file_handle)
-#file_handle.close()
